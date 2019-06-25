@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../static/css/show.css" rel="stylesheet">
+    <script src="../static/js/jquery-1.11.3.js"></script>
+    <script>
+        $(function(){
+            function findphoto (){
+              var html=""
+              $.ajax({
+                url:"/ajax",
+                type:"get", //get为默认值,可以省略
+                data:{'find':$(" input[ name='find' ] ").val()},
+                dataType:'json',
+                async:true, //true为默认值,可以省略
+                success:function(data){
+                  for(var i=0;i<data.length;i++){
+                      html +='<a href="'+data[i]+'" target="_blank">'+ '<img src="'+data[i]+'">'
+                  }
+                  $("#show").html(html)
+                }
+              });
+            }
+            $("#find").keydown(function (event) {
+                if(event.keyCode==13){
+                    $("btn").click(findphoto())
+                }
+            })
+            $("#btn").click(findphoto())
+        });
+    </script>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        h1{
+            text-align: center;
+            margin-top:30px;
+            margin-bottom: 20px;
+        }
+        #from{
+            width:480px;
+            margin:10px auto;
+        }
+        #find{
+            width:350px;
+            height: 50px;
+            padding-left: 20px;
+            font-size: 18px;
+            background-color: beige;
+            border: none;
+            vertical-align: top;
+            border:1px solid black;
+        }
+        #btn{
+            border:none;
+            background-color: black;
+            width: 80px;
+            height: 52px;
+            font-size: 18px;
+            font-weight: bold;
+            color:white;
+            vertical-align: top;
+        }
+        #show img{
+            height: 200px;
+            margin:20px;
+            border: 5px solid gainsboro;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>图域</h1>
+    <div id="from">
+        <input type="text" placeholder="请输入要搜索的内容" maxlength="30" name="find" id="find"><input type="submit" id="btn" value="搜　索">
+    </div>
+    <div id="show">
+
+    </div>
+</body>
+</html>
